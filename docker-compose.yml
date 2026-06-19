@@ -1,0 +1,22 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: gpn-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root_secret
+      MYSQL_DATABASE: gpn_leads
+      MYSQL_USER: gpn_user
+      MYSQL_PASSWORD: gpn_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - gpn_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "gpn_user", "-p" "gpn_pass"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  gpn_mysql_data:
